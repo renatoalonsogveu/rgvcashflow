@@ -37,7 +37,7 @@ details summary{list-style-position:inside}
 details.card>summary{cursor:pointer;font:700 15px/1.2 Manrope,sans-serif}
 .pr{display:grid;grid-template-columns:auto 1fr 112px;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
 .pr input[type=checkbox]{width:20px;height:20px;padding:0;accent-color:var(--acc)}
-.pr input[type=number]{text-align:right}
+.pr input[data-pm]{text-align:right}
 .pr.ok .pn{color:var(--mute)}
 #fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border-radius:50%;background:var(--acc);color:var(--btn);font-size:32px;line-height:1;padding:0;box-shadow:0 6px 18px rgba(0,0,0,.28);z-index:20}
 #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(88px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:12px;font-size:14px;z-index:30;display:flex;gap:10px;align-items:center;max-width:92vw;box-shadow:0 6px 18px rgba(0,0,0,.25)}
@@ -100,13 +100,13 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
     <summary id="noms">Organización de nómina</summary>
     <div style="margin-top:12px">
       <label class="lbl" for="nomi">Nómina percibida en <span id="nomm"></span> (€)</label>
-      <input id="nomi" type="number" step="0.01" min="0" inputmode="decimal" placeholder="0 €" style="font-weight:700;margin:6px 0 16px">
+      <input id="nomi" type="text" step="0.01" min="0" inputmode="decimal" placeholder="0 €" style="font-weight:700;margin:6px 0 16px">
       <h2>Pagos fijos mensuales</h2>
       <div id="pagl"></div>
       <button type="button" class="add" id="tgp" aria-expanded="false" aria-controls="fp" style="width:100%;margin-top:10px">Añadir pago fijo mensual</button>
       <form id="fp" hidden style="margin-top:10px;grid-template-columns:1fr 112px">
         <input name="nombre" placeholder="Nombre (ej. Seguro)" maxlength="30" required>
-        <input name="monto" type="number" step="0.01" min="0" inputmode="decimal" placeholder="Monto €" required>
+        <input name="monto" type="text" step="0.01" min="0" inputmode="decimal" placeholder="Monto €" required>
         <button class="add full" type="submit">Añadir a la lista</button>
       </form>
       <div id="nomr" style="margin-top:12px"></div>
@@ -115,7 +115,7 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
   <details class="card" id="invd">
     <summary id="invs">Inversiones/Ahorro/Colchón</summary>
     <form id="fv" style="margin-top:12px">
-      <input name="monto" type="number" step="0.01" min="0.01" inputmode="decimal" placeholder="Importe en €" required>
+      <input name="monto" type="text" step="0.01" min="0.01" inputmode="decimal" placeholder="Importe en €" required>
       <input name="fecha" type="date" min="2026-01-01" max="2030-12-31" required>
       <select name="dest" class="full" aria-label="Destino"><option value="Ahorro">Ahorro (Cuenta Remunerada)</option><option value="Inversión">Inversión (Fondo Indexado)</option><option value="Colchón">Colchón (BBVA)</option></select>
       <input name="nota" class="full" placeholder="Descripción (ej. fondo indexado)" maxlength="60">
@@ -131,7 +131,7 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
   <section class="card top">
     <div class="topl">
       <label class="lbl" id="mlbl" for="avail">Disponible para gastar este mes</label>
-      <input class="avail" id="avail" type="number" step="0.01" min="0" inputmode="decimal" placeholder="0 €" aria-label="Disponible para gastar este mes">
+      <input class="avail" id="avail" type="text" step="0.01" min="0" inputmode="decimal" placeholder="0 €" aria-label="Disponible para gastar este mes">
       <label class="lbl" style="display:flex;gap:8px;align-items:center;margin:-4px 0 12px;font-weight:400;font-size:13px"><input type="checkbox" id="auto" style="width:18px;height:18px;padding:0;accent-color:var(--acc)"> Rellenar con el Restante para gastos personales</label>
       <div id="limv"></div>
       <p class="lbl" id="dia" style="margin-top:10px;font-weight:400"></p>
@@ -143,7 +143,7 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
     <h2>Registrar compra</h2>
     <form id="f">
       <select name="cat" aria-label="Categoría" id="catsel"></select>
-      <input name="monto" type="number" step="0.01" min="0.01" inputmode="decimal" placeholder="Importe en €" required>
+      <input name="monto" type="text" step="0.01" min="0.01" inputmode="decimal" placeholder="Importe en €" required>
       <input name="fecha" type="date" min="2026-01-01" max="2026-12-31" required>
       <input name="nota" placeholder="Nota (opcional)" maxlength="60">
       <button class="add full" type="submit">Guardar compra</button>
@@ -152,7 +152,7 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
   <section class="card">
     <button type="button" class="add" id="tgl" aria-expanded="false" aria-controls="fi" style="width:100%">Añadir dinero a la cuenta</button>
     <form id="fi" hidden style="margin-top:12px">
-      <input name="monto" type="number" step="0.01" min="0.01" inputmode="decimal" placeholder="Importe en €" required>
+      <input name="monto" type="text" step="0.01" min="0.01" inputmode="decimal" placeholder="Importe en €" required>
       <input name="fecha" type="date" min="2026-01-01" max="2026-12-31" required>
       <input name="nota" class="full" placeholder="Origen (ej. nómina)" maxlength="60">
       <button class="add full" type="submit">Añadir dinero</button>
@@ -185,7 +185,7 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
   <div id="toast" role="status" hidden></div>
   <dialog id="qd" aria-label="Registro rápido">
     <div class="qt" id="qt"><button type="button" data-q="g" aria-pressed="true">Gasto</button><button type="button" data-q="i" aria-pressed="false">Ingreso</button><button type="button" data-q="v" aria-pressed="false">Ahorro</button></div>
-    <input id="qa" type="number" step="0.01" min="0.01" inputmode="decimal" placeholder="0,00 €" aria-label="Importe en euros">
+    <input id="qa" type="text" step="0.01" min="0.01" inputmode="decimal" placeholder="0,00 €" aria-label="Importe en euros">
     <p class="lbl" id="qh" style="margin:8px 0 0;min-height:20px;font-weight:400"></p>
     <div class="chips" id="qc"></div>
     <button type="button" class="lnk" id="qm">Más opciones</button>
@@ -203,7 +203,7 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
     <form id="fe">
       <h2 class="full" style="margin:0 0 4px">Editar movimiento</h2>
       <select name="cat" class="full" aria-label="Categoría"></select>
-      <input name="monto" type="number" step="0.01" min="0.01" inputmode="decimal" placeholder="Importe en €" required>
+      <input name="monto" type="text" step="0.01" min="0.01" inputmode="decimal" placeholder="Importe en €" required>
       <input name="fecha" type="date" min="2026-01-01" max="2030-12-31" required>
       <input name="nota" class="full" placeholder="Nota (opcional)" maxlength="60">
       <button type="button" id="edc" style="background:var(--bg);border:1px solid var(--line);font-weight:700">Cancelar</button>
@@ -214,6 +214,9 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
 <script>
 (function(){
 var KEY='cashflow-v1';
+function pf(v){return window.parseFloat(String(v==null?'':v).replace(',','.'))}
+function fm(x){return String(x).replace('.',',')}
+document.addEventListener('input',function(e){var t=e.target;if(t&&t.getAttribute&&t.getAttribute('inputmode')==='decimal'){var v=t.value,c=v.replace(/[^0-9.,]/g,'');if(c!==v)t.value=c}},true);
 var CATS=['Comida fuera','Suplementos','Medicamentos','Snacks','Alcohol','Tecnología','Conocimiento','Ropa','Vacaciones/Viajes','Eventos/Fiestas','Otros'];
 var COL=['#d9482b','#e0a100','#2f9e6b','#3b82c4','#8b5cf6','#0f9aa8','#c2569b','#7c6a4d','#e26d9a','#5aa05a','#8a8f98'];
 var NM=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -245,7 +248,7 @@ function render(){
   $('yr').innerHTML=[2026,2027,2028,2029,2030].map(function(y){return '<option'+(y===Y?' selected':'')+'>'+y+'</option>'}).join('');
   $('mon').innerHTML=MES.map(function(m){return '<option value="'+m.k+'"'+(m.k===cur?' selected':'')+'>'+m.n+'</option>'}).join('');
   $('mlbl').textContent='Disponible para gastar en '+n.toLowerCase()+' (€)';
-  var base=LIM[cur]||0,incM=sum(inc),lim=base+incM;if(document.activeElement!==$('avail'))$('avail').value=lim?Math.round(lim*100)/100:'';
+  var base=LIM[cur]||0,incM=sum(inc),lim=base+incM;if(document.activeElement!==$('avail'))$('avail').value=lim?fm(Math.round(lim*100)/100):'';
   if(lim>0){var pc=tot/lim*100,col=pc>100?'#d9482b':(pc>=80?'#e0a100':'#2f9e6b');$('limv').innerHTML='<div style="display:flex;justify-content:space-between;gap:8px;font-size:14px;margin-bottom:5px"><span>Gastado '+eur.format(tot)+' de '+eur.format(lim)+'</span><b>'+(tot>lim?'Te pasaste '+eur.format(tot-lim):'Quedan '+eur.format(lim-tot))+'</b></div><div style="height:10px;border-radius:5px;background:var(--line);overflow:hidden"><i style="display:block;height:100%;width:'+Math.min(100,pc)+'%;background:'+col+';border-radius:5px"></i></div>'}else{$('limv').innerHTML='<p class="empty">Escribe el importe disponible para este mes.</p>'}
   if(incM>0)$('limv').innerHTML+='<p class="lbl" style="font-weight:400;margin-top:6px">Incluye <b style="color:var(--ink)">+'+eur.format(incM)+'</b> de dinero añadido este mes.</p>';
   dayPace(lim,tot);$('bal').innerHTML='Ingresos del mes: <b style="color:var(--ink)">'+eur.format(sum(inc))+'</b> · Saldo en cuenta: <b style="color:var(--ink)">'+eur.format(sum(I)-sum(G))+'</b> · Invertido en el mes: <b style="color:var(--ink)">'+eur.format(sum(D.filter(function(x){return x.tipo==='inv'&&x.fecha.slice(0,7)===cur})))+'</b>';
@@ -278,7 +281,7 @@ function dayView(){
   $('dayl').innerHTML=L.length?L.map(function(x){var i=CATS.indexOf(x.cat),pos=x.tipo==='in';return '<div class="row"><div><i class="dot" style="background:'+(x.tipo==='inv'?(DCOL[x.cat]||'#7c5cd6'):(pos?'#2f9e6b':COL[i<0?0:i]))+'"></i>'+esc(DLBL[x.cat]||x.cat)+(x.nota?'<small>'+esc(x.nota)+'</small>':'')+'</div><b>'+(pos?'+':'')+eur.format(x.monto)+'</b><span style="display:flex"><button class="x" data-ed="'+x.id+'" aria-label="Editar movimiento">✎</button><button class="x" data-del="'+x.id+'" aria-label="Eliminar movimiento">×</button></span></div>'}).join('')+'<p class="lbl" style="margin-top:10px">Gastado: <b style="color:var(--ink)">'+eur.format(g)+'</b> · Ingresado: <b style="color:var(--ink)">'+eur.format(r)+'</b>'+(v>0?' · Invertido: <b style="color:var(--ink)">'+eur.format(v)+'</b>':'')+'</p>':'<p class="empty">Sin movimientos este día.</p>';
   c.hidden=false;
 }
-$('avail').addEventListener('input',function(e){var v=parseFloat(e.target.value),im=sum(D.filter(function(x){return x.tipo==='in'&&x.fecha.slice(0,7)===cur})),b=Math.round((v-im)*100)/100;if(isFinite(v)&&b!==0)LIM[cur]=b;else delete LIM[cur];saveL();render()});
+$('avail').addEventListener('input',function(e){var v=pf(e.target.value),im=sum(D.filter(function(x){return x.tipo==='in'&&x.fecha.slice(0,7)===cur})),b=Math.round((v-im)*100)/100;if(isFinite(v)&&b!==0)LIM[cur]=b;else delete LIM[cur];saveL();render()});
 $('cal').addEventListener('click',function(e){var b=e.target.closest('button[data-d]');if(!b)return;var d=b.getAttribute('data-d');sel=(sel===d)?null:d;if(sel){$('f').fecha.value=sel;$('fi').fecha.value=sel;$('fv').fecha.value=sel}render();if(sel)$('daycard').scrollIntoView({behavior:'smooth',block:'nearest'})});
 (function(){
   function dl(name,data,type){var a=document.createElement('a'),u=URL.createObjectURL(new Blob([data],{type:type}));a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove()},1500)}
@@ -308,7 +311,7 @@ function invView(){
   var sub=['Ahorro','Inversión','Colchón'].map(function(c){return DLBL[c]+': <b style="color:var(--ink)">'+eur.format(sum(vm.filter(function(x){return x.cat===c})))+'</b>'}).join(' · ');
   $('invl').innerHTML=vm.length?'<p class="lbl" style="margin-bottom:6px">'+sub+'</p>'+vm.map(function(x){return '<div class="row"><div><i class="dot" style="background:'+(DCOL[x.cat]||'#7c5cd6')+'"></i>'+esc(x.nota||DLBL[x.cat]||x.cat)+'<small>'+fdate(x.fecha)+' · '+esc(DLBL[x.cat]||x.cat)+'</small></div><b>'+eur.format(x.monto)+'</b><span style="display:flex"><button class="x" data-ed="'+x.id+'" aria-label="Editar movimiento">✎</button><button class="x" data-del="'+x.id+'" aria-label="Eliminar inversión">×</button></span></div>'}).join(''):'<p class="empty">Sin inversiones este mes.</p>';
 }
-$('fv').addEventListener('submit',function(e){e.preventDefault();var f=e.target;var m=parseFloat(f.monto.value);if(!(m>0))return;D.push({id:Date.now(),tipo:'inv',fecha:f.fecha.value,cat:f.dest.value||'Inversión',monto:m,nota:f.nota.value.trim()});save();cur=f.fecha.value.slice(0,7);f.monto.value='';f.nota.value='';render()});
+$('fv').addEventListener('submit',function(e){e.preventDefault();var f=e.target;var m=pf(f.monto.value);if(!(m>0))return;D.push({id:Date.now(),tipo:'inv',fecha:f.fecha.value,cat:f.dest.value||'Inversión',monto:m,nota:f.nota.value.trim()});save();cur=f.fecha.value.slice(0,7);f.monto.value='';f.nota.value='';render()});
 $('invl').addEventListener('click',delH);
 function items(){return ITEMS.concat(PAY._items||[])}
 function payFor(k){
@@ -326,14 +329,14 @@ function drawPay(){
   $('restv').textContent=eur.format(rest);$('restv').style.color=rest<0?'#d9482b':'';
   $('auto').checked=!!p.auto;$('avail').readOnly=!!p.auto;
   $('nomm').textContent=mname(cur).toLowerCase();
-  if(document.activeElement!==$('nomi'))$('nomi').value=p.n||'';
+  if(document.activeElement!==$('nomi'))$('nomi').value=p.n?fm(p.n):'';
   $('noms').textContent='Organización de nómina'+(p.n>0?' · Restante: '+eur.format(rest):'');
   if(!$('pagl').contains(document.activeElement)){
-    $('pagl').innerHTML=items().map(function(i){var it=p.it[i]||{m:0,ok:false};return '<div class="pr'+(it.ok?' ok':'')+'"><input type="checkbox" data-pk="'+i+'"'+(it.ok?' checked':'')+' aria-label="Pagado: '+i+'"><span class="pn">'+i+(ITEMS.indexOf(i)<0?' <button type="button" class="x" data-pd="'+i+'" aria-label="Quitar '+i+'">×</button>':'')+'</span><input type="number" step="0.01" min="0" inputmode="decimal" data-pm="'+i+'" value="'+(it.m||'')+'" placeholder="0 €" aria-label="Monto de '+i+'"></div>'}).join('');
+    $('pagl').innerHTML=items().map(function(i){var it=p.it[i]||{m:0,ok:false};return '<div class="pr'+(it.ok?' ok':'')+'"><input type="checkbox" data-pk="'+i+'"'+(it.ok?' checked':'')+' aria-label="Pagado: '+i+'"><span class="pn">'+i+(ITEMS.indexOf(i)<0?' <button type="button" class="x" data-pd="'+i+'" aria-label="Quitar '+i+'">×</button>':'')+'</span><input type="text" step="0.01" min="0" inputmode="decimal" data-pm="'+i+'" value="'+(it.m?fm(it.m):'')+'" placeholder="0 €" aria-label="Monto de '+i+'"></div>'}).join('');
   }
   $('nomr').innerHTML='<div class="cat"><div class="t"><span>Pagos marcados</span><span>'+eur.format(tot)+'</span></div></div><div class="cat"><div class="t"><span>Inversiones/Ahorro/Colchón</span><span>'+eur.format(inv)+'</span></div></div><div class="cat"><div class="t"><span>Nómina restante</span><span style="color:'+(rest<0?'#d9482b':'inherit')+'">'+eur.format(rest)+'</span></div></div>';
 }
-$('nomi').addEventListener('input',function(e){var p=payEdit();p.n=parseFloat(e.target.value)||0;savePay();render()});
+$('nomi').addEventListener('input',function(e){var p=payEdit();p.n=pf(e.target.value)||0;savePay();render()});
 function restFor(){var p=payFor(cur),t=0;items().forEach(function(i){var it=p.it[i];if(it&&it.ok)t+=it.m||0});return (p.n||0)-t-sum(D.filter(function(x){return x.tipo==='inv'&&x.fecha.slice(0,7)===cur}))}
 function autoSync(){var p=payFor(cur);if(!p.auto)return;var r=restFor(),v=r>0?Math.round(r*100)/100:0;if((LIM[cur]||0)!==v){if(v>0)LIM[cur]=v;else delete LIM[cur];saveL()}}
 function dayPace(lim,tot){
@@ -381,7 +384,7 @@ function toast(o){
   $('tundo').onclick=function(){D=D.filter(function(x){return x.id!==o.id});save();render();el.hidden=true};
 }
 function qsave(cat){
-  var m=parseFloat($('qa').value);
+  var m=pf($('qa').value);
   if(!(m>0)){$('qh').textContent='Escribe primero el importe.';$('qh').style.color='#d9482b';$('qa').focus();return}
   var d=$('qdt').value||today(),o={id:Date.now(),fecha:d,monto:m,nota:$('qn').value.trim()};
   if(qtab==='i'){o.tipo='in';o.cat='Ingreso'}else if(qtab==='v'){o.tipo='inv';o.cat=cat}else{o.cat=cat}
@@ -401,11 +404,11 @@ function openEdit(id){
   editId=id;var f=$('fe'),s=f.cat;
   if(x.tipo==='in'){s.hidden=true;s.innerHTML=''}
   else{s.hidden=false;s.innerHTML=(x.tipo==='inv'?['Ahorro','Inversión','Colchón'].map(function(c){return '<option value="'+c+'">'+DLBL[c]+'</option>'}):CATS.map(function(c){return '<option>'+c+'</option>'})).join('');s.value=x.cat}
-  f.monto.value=x.monto;f.fecha.value=x.fecha;f.nota.value=x.nota||'';
+  f.monto.value=fm(x.monto);f.fecha.value=x.fecha;f.nota.value=x.nota||'';
   $('ed').showModal();
 }
 $('fe').addEventListener('submit',function(e){
-  e.preventDefault();var f=e.target,x=D.filter(function(y){return y.id===editId})[0],m=parseFloat(f.monto.value);
+  e.preventDefault();var f=e.target,x=D.filter(function(y){return y.id===editId})[0],m=pf(f.monto.value);
   if(!x||!(m>0)){$('ed').close();return}
   x.monto=m;x.fecha=f.fecha.value;x.nota=f.nota.value.trim();if(x.tipo!=='in')x.cat=f.cat.value;
   save();cur=x.fecha.slice(0,7);$('ed').close();render();
@@ -414,21 +417,21 @@ $('edc').addEventListener('click',function(){$('ed').close()});
 $('auto').addEventListener('change',function(e){var p=payEdit();p.auto=e.target.checked;savePay();render()});
 $('tgp').addEventListener('click',function(){var h=$('fp').hidden;$('fp').hidden=!h;this.setAttribute('aria-expanded',h);this.textContent=h?'Cancelar':'Añadir pago fijo mensual'});
 $('fp').addEventListener('submit',function(e){
-  e.preventDefault();var f=e.target,nm=f.nombre.value.replace(/["'<>&]/g,'').trim().slice(0,30),m=parseFloat(f.monto.value)||0;
+  e.preventDefault();var f=e.target,nm=f.nombre.value.replace(/["'<>&]/g,'').trim().slice(0,30),m=pf(f.monto.value)||0;
   if(!nm||items().indexOf(nm)>=0){f.nombre.setCustomValidity(nm?'Ese nombre ya existe':'Escribe un nombre');f.nombre.reportValidity();setTimeout(function(){f.nombre.setCustomValidity('')},1500);return}
   PAY._items=(PAY._items||[]).concat([nm]);var p=payEdit();p.it[nm]={m:m,ok:false};savePay();
   f.reset();f.hidden=true;$('tgp').textContent='Añadir pago fijo mensual';$('tgp').setAttribute('aria-expanded','false');render();
 });
 $('pagl').addEventListener('click',function(e){var k=e.target.getAttribute('data-pd');if(!k)return;e.target.blur();PAY._items=(PAY._items||[]).filter(function(x){return x!==k});savePay();render()});
 $('pagl').addEventListener('change',function(e){var k=e.target.getAttribute('data-pk');if(!k)return;var p=payEdit();p.it[k]=p.it[k]||{m:0,ok:false};p.it[k].ok=e.target.checked;e.target.parentNode.classList.toggle('ok',e.target.checked);savePay();render()});
-$('pagl').addEventListener('input',function(e){var k=e.target.getAttribute('data-pm');if(!k)return;var p=payEdit();p.it[k]=p.it[k]||{m:0,ok:false};p.it[k].m=parseFloat(e.target.value)||0;savePay();render()});
+$('pagl').addEventListener('input',function(e){var k=e.target.getAttribute('data-pm');if(!k)return;var p=payEdit();p.it[k]=p.it[k]||{m:0,ok:false};p.it[k].m=pf(e.target.value)||0;savePay();render()});
 $('yr').addEventListener('change',function(e){Y=+e.target.value;mk();cur=Y+'-'+cur.slice(5);sel=null;var d=(today().slice(0,7)===cur?today():cur+'-01');$('f').fecha.value=d;$('fi').fecha.value=d;$('fv').fecha.value=d;render()});
 $('mon').addEventListener('change',function(e){var k=e.target.value;cur=k;sel=null;var d=(today().slice(0,7)===k?today():k+'-01');$('f').fecha.value=d;$('fi').fecha.value=d;$('fv').fecha.value=d;render()});
 function delH(e){var ed=e.target.getAttribute('data-ed');if(ed){openEdit(+ed);return}var id=+e.target.getAttribute('data-del');if(!id)return;D=D.filter(function(x){return x.id!==id});save();render()}
 $('list').addEventListener('click',delH);$('dayl').addEventListener('click',delH);
-$('fi').addEventListener('submit',function(e){e.preventDefault();var f=e.target;var m=parseFloat(f.monto.value);if(!(m>0))return;D.push({id:Date.now(),tipo:'in',fecha:f.fecha.value,cat:'Ingreso',monto:m,nota:f.nota.value.trim()});save();cur=f.fecha.value.slice(0,7);f.monto.value='';f.nota.value='';f.hidden=true;$('tgl').textContent='Añadir dinero a la cuenta';$('tgl').setAttribute('aria-expanded','false');render()});
+$('fi').addEventListener('submit',function(e){e.preventDefault();var f=e.target;var m=pf(f.monto.value);if(!(m>0))return;D.push({id:Date.now(),tipo:'in',fecha:f.fecha.value,cat:'Ingreso',monto:m,nota:f.nota.value.trim()});save();cur=f.fecha.value.slice(0,7);f.monto.value='';f.nota.value='';f.hidden=true;$('tgl').textContent='Añadir dinero a la cuenta';$('tgl').setAttribute('aria-expanded','false');render()});
 $('f').addEventListener('submit',function(e){
-  e.preventDefault();var f=e.target;var m=parseFloat(f.monto.value);if(!(m>0))return;
+  e.preventDefault();var f=e.target;var m=pf(f.monto.value);if(!(m>0))return;
   D.push({id:Date.now(),fecha:f.fecha.value,cat:f.cat.value,monto:m,nota:f.nota.value.trim()});
   save();cur=f.fecha.value.slice(0,7);f.monto.value='';f.nota.value='';render();
 });
