@@ -115,7 +115,7 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
   <details class="card" id="invd">
     <summary id="invs">Inversiones/Ahorro/Colchón</summary>
     <form id="fv" style="margin-top:12px">
-      <input name="monto" type="number" step="0.01" min="0.01" placeholder="Importe en €" required>
+      <input name="monto" type="number" step="0.01" min="0.01" inputmode="decimal" placeholder="Importe en €" required>
       <input name="fecha" type="date" min="2026-01-01" max="2030-12-31" required>
       <select name="dest" class="full" aria-label="Destino"><option value="Ahorro">Ahorro (Cuenta Remunerada)</option><option value="Inversión">Inversión (Fondo Indexado)</option><option value="Colchón">Colchón (BBVA)</option></select>
       <input name="nota" class="full" placeholder="Descripción (ej. fondo indexado)" maxlength="60">
@@ -143,7 +143,7 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
     <h2>Registrar compra</h2>
     <form id="f">
       <select name="cat" aria-label="Categoría" id="catsel"></select>
-      <input name="monto" type="number" step="0.01" min="0.01" placeholder="Importe en €" required>
+      <input name="monto" type="number" step="0.01" min="0.01" inputmode="decimal" placeholder="Importe en €" required>
       <input name="fecha" type="date" min="2026-01-01" max="2026-12-31" required>
       <input name="nota" placeholder="Nota (opcional)" maxlength="60">
       <button class="add full" type="submit">Guardar compra</button>
@@ -152,7 +152,7 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
   <section class="card">
     <button type="button" class="add" id="tgl" aria-expanded="false" aria-controls="fi" style="width:100%">Añadir dinero a la cuenta</button>
     <form id="fi" hidden style="margin-top:12px">
-      <input name="monto" type="number" step="0.01" min="0.01" placeholder="Importe en €" required>
+      <input name="monto" type="number" step="0.01" min="0.01" inputmode="decimal" placeholder="Importe en €" required>
       <input name="fecha" type="date" min="2026-01-01" max="2026-12-31" required>
       <input name="nota" class="full" placeholder="Origen (ej. nómina)" maxlength="60">
       <button class="add full" type="submit">Añadir dinero</button>
