@@ -31,6 +31,13 @@ main{max-width:680px;margin:0 auto;padding:18px 16px 100px}
 :root{--blue:#0a9c78;--blueon:#fff}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--blue:#19d3a2;--blueon:#03241b}}
 :root[data-theme="dark"]{--blue:#19d3a2;--blueon:#03241b}
+:root{--red:#c4402b;--redon:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--red:#ff6b57;--redon:#2a0a05}}
+:root[data-theme="dark"]{--red:#ff6b57;--redon:#2a0a05}
+#f{--acc:var(--red)}
+section.card:has(#f){border-left:4px solid var(--red)}
+section.card:has(#f) h2{color:var(--red)}
+#f .add{background:var(--red);color:var(--redon)}
 #tgl,#fi .add{background:var(--blue);color:var(--blueon)}
 #tgv,#fv .add{background:#1b7f8c;color:#fff}
 details summary{list-style-position:inside}

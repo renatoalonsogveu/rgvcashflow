@@ -1,6 +1,6 @@
 // Service worker de RGV CASHFLOW: permite abrir la app sin conexión.
 // Cambia el número de versión cuando quieras forzar que se renueve la copia guardada.
-const CACHE = 'rgv-cashflow-v4';
+const CACHE = 'rgv-cashflow-v5';
 const ASSETS = [
   './',
   'index.html',
