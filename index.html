@@ -61,7 +61,8 @@ details.card>summary{cursor:pointer;font:700 15px/1.2 Manrope,sans-serif}
 .lbl{color:var(--mute);font-size:14px;font-weight:600;margin:0}
 .top{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
 .topl{flex:1 1 200px;min-width:0}
-.avail{font:800 clamp(34px,10vw,52px)/1.05 'Bricolage Grotesque',Impact,sans-serif;letter-spacing:-.02em;background:transparent;border:0;border-bottom:2px dashed var(--line);border-radius:0;padding:2px 0;width:100%;margin:2px 0 12px}
+.qued{font:800 clamp(38px,11vw,56px)/1.05 'Bricolage Grotesque',Impact,sans-serif;letter-spacing:-.02em;margin:2px 0 10px}
+.avail{font:700 18px/1.2 'Bricolage Grotesque',Impact,sans-serif;letter-spacing:-.01em;background:transparent;border:0;border-bottom:2px dashed var(--line);border-radius:0;padding:2px 0;width:100%;margin:2px 0 12px}
 .avail:focus{border-bottom-color:var(--acc);outline:0}
 .cal{flex:0 0 224px;width:224px;margin:0 auto}
 .cal .hd{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:11px;color:var(--mute);font-weight:700;margin-bottom:2px}
@@ -132,12 +133,14 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
   </details>
   <section class="card" id="rest">
     <p class="lbl">Restante para gastos personales</p>
-    <p id="restv" style="font:800 32px/1.1 'Bricolage Grotesque',Impact,sans-serif;letter-spacing:-.02em;margin:4px 0 6px">0 €</p>
+    <p id="restv" style="font:700 20px/1.2 'Bricolage Grotesque',Impact,sans-serif;letter-spacing:-.01em;margin:4px 0 6px">0 €</p>
     <p class="lbl" style="font-weight:400;font-size:13px">Nómina menos pagos fijos marcados y menos Inversiones/Ahorro/Colchón del mes.</p>
   </section>
   <section class="card top">
     <div class="topl">
-      <label class="lbl" id="mlbl" for="avail">Disponible para gastar este mes</label>
+      <p class="lbl" id="mlbl">Te queda para gastar este mes</p>
+      <p class="qued" id="qued">—</p>
+      <label class="lbl" for="avail" style="margin:0;font-weight:400;font-size:13px">Disponible del mes (editable)</label>
       <input class="avail" id="avail" type="text" step="0.01" min="0" inputmode="decimal" placeholder="0 €" aria-label="Disponible para gastar este mes">
       <label class="lbl" style="display:flex;gap:8px;align-items:center;margin:-4px 0 12px;font-weight:400;font-size:13px"><input type="checkbox" id="auto" style="width:18px;height:18px;padding:0;accent-color:var(--acc)"> Rellenar con el Restante para gastos personales</label>
       <div id="limv"></div>
@@ -167,6 +170,7 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
   </section>
   <section class="card">
     <h2>Estadísticas del mes</h2>
+    <div id="donut"></div>
     <div class="kpis" id="kpis"></div>
     <div id="cats"></div>
   </section>
@@ -193,13 +197,13 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
   <dialog id="qd" aria-label="Registro rápido">
     <div class="qt" id="qt"><button type="button" data-q="g" aria-pressed="true">Gasto</button><button type="button" data-q="i" aria-pressed="false">Ingreso</button><button type="button" data-q="v" aria-pressed="false">Ahorro</button></div>
     <input id="qa" type="text" step="0.01" min="0.01" inputmode="decimal" placeholder="0,00 €" aria-label="Importe en euros">
+    <input id="qn" placeholder="Detalle del movimiento (opcional)" maxlength="60" aria-label="Detalle" style="margin-top:8px">
     <p class="lbl" id="qh" style="margin:8px 0 0;min-height:20px;font-weight:400"></p>
     <div class="chips" id="qc"></div>
     <button type="button" class="lnk" id="qm">Más opciones</button>
     <div id="qx" hidden style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
       <select id="qs" class="full" aria-label="Categoría"></select>
       <input id="qdt" type="date" min="2026-01-01" max="2030-12-31" aria-label="Fecha">
-      <input id="qn" placeholder="Nota (opcional)" maxlength="60" aria-label="Nota">
     </div>
     <div style="display:flex;gap:8px;margin-top:12px">
       <button type="button" id="qcx" style="background:var(--bg);border:1px solid var(--line);font-weight:700;color:var(--ink)">Cancelar</button>
@@ -254,10 +258,11 @@ function render(){
   var tot=sum(mine),n=mname(cur);
   $('yr').innerHTML=[2026,2027,2028,2029,2030].map(function(y){return '<option'+(y===Y?' selected':'')+'>'+y+'</option>'}).join('');
   $('mon').innerHTML=MES.map(function(m){return '<option value="'+m.k+'"'+(m.k===cur?' selected':'')+'>'+m.n+'</option>'}).join('');
-  $('mlbl').textContent='Disponible para gastar en '+n.toLowerCase()+' (€)';
+  $('mlbl').textContent='Te queda para gastar en '+n.toLowerCase();
   var base=LIM[cur]||0,incM=sum(inc),lim=base+incM;if(document.activeElement!==$('avail'))$('avail').value=lim?fm(Math.round(lim*100)/100):'';
-  if(lim>0){var pc=tot/lim*100,col=pc>100?'#d9482b':(pc>=80?'#e0a100':'#19d3a2');$('limv').innerHTML='<div style="display:flex;justify-content:space-between;gap:8px;font-size:14px;margin-bottom:5px"><span>Gastado '+eur.format(tot)+' de '+eur.format(lim)+'</span><b>'+(tot>lim?'Te pasaste '+eur.format(tot-lim):'Quedan '+eur.format(lim-tot))+'</b></div><div style="height:10px;border-radius:5px;background:var(--line);overflow:hidden"><i style="display:block;height:100%;width:'+Math.min(100,pc)+'%;background:'+col+';border-radius:5px"></i></div>'}else{$('limv').innerHTML='<p class="empty">Escribe el importe disponible para este mes.</p>'}
+  if(lim>0){var pc=tot/lim*100,col=pc>100?'#d9482b':(pc>=80?'#e0a100':'#19d3a2');$('limv').innerHTML='<div style="display:flex;justify-content:space-between;gap:8px;font-size:14px;margin-bottom:5px"><span>Gastado '+eur.format(tot)+' de '+eur.format(lim)+'</span></div><div style="height:10px;border-radius:5px;background:var(--line);overflow:hidden"><i style="display:block;height:100%;width:'+Math.min(100,pc)+'%;background:'+col+';border-radius:5px"></i></div>'}else{$('limv').innerHTML='<p class="empty">Escribe el importe disponible para este mes.</p>'}
   if(incM>0)$('limv').innerHTML+='<p class="lbl" style="font-weight:400;margin-top:6px">Incluye <b style="color:var(--ink)">+'+eur.format(incM)+'</b> de dinero añadido este mes.</p>';
+  var qe=$('qued');if(lim>0){qe.textContent=(tot>lim?'−':'')+eur.format(Math.abs(lim-tot));qe.style.color=tot>lim?'#d9482b':''}else{qe.textContent='—';qe.style.color=''}
   dayPace(lim,tot);$('bal').innerHTML='Ingresos del mes: <b style="color:var(--ink)">'+eur.format(sum(inc))+'</b> · Saldo en cuenta: <b style="color:var(--ink)">'+eur.format(sum(I)-sum(G))+'</b> · Invertido en el mes: <b style="color:var(--ink)">'+eur.format(sum(D.filter(function(x){return x.tipo==='inv'&&x.fecha.slice(0,7)===cur})))+'</b>';
   var by=CATS.map(function(c){return sum(mine.filter(function(x){return x.cat===c}))});
   var top=0;by.forEach(function(v,i){if(v>by[top])top=i});
@@ -267,7 +272,19 @@ function render(){
   $('months').innerHTML=MES.map(function(m){var v=sum(G.filter(function(x){return x.fecha.slice(0,7)===m.k}));return '<div class="cat"><div class="t"><span>'+m.n+'</span><span>'+eur.format(v)+'</span></div><div class="b"><i style="width:'+(v/mx*100)+'%;background:var(--acc)"></i></div></div>'}).join('')+'<p class="lbl">Gasto del año: <b style="color:var(--ink)">'+eur.format(all)+'</b></p>';
   var L=mine.concat(inc);L.sort(function(a,b){return a.fecha<b.fecha?1:(a.fecha>b.fecha?-1:b.id-a.id)});
   $('list').innerHTML=L.length?L.map(function(x){var i=CATS.indexOf(x.cat),pos=x.tipo==='in';return '<div class="row"><div><i class="dot" style="background:'+(pos?'#19d3a2':COL[i<0?0:i])+'"></i>'+esc(x.cat)+'<small>'+fdate(x.fecha)+(x.nota?' · '+esc(x.nota):'')+'</small></div><b>'+(pos?'+':'')+eur.format(x.monto)+'</b><span style="display:flex"><button class="x" data-ed="'+x.id+'" aria-label="Editar movimiento">✎</button><button class="x" data-del="'+x.id+'" aria-label="Eliminar compra">×</button></span></div>'}).join(''):'<p class="empty">Aún no hay movimientos en '+n.toLowerCase()+'. Registra la primera arriba.</p>';
-  drawCal();dayView();invView();drawPay();
+  drawCal();dayView();invView();drawPay();drawDonut();
+}
+function drawDonut(){
+  var seg=[];
+  CATS.forEach(function(c){var v=sum(D.filter(function(x){return x.tipo!=='in'&&x.tipo!=='inv'&&x.fecha.slice(0,7)===cur&&x.cat===c}));if(v>0)seg.push({n:c,v:v,c:ccol(c)})});
+  var p=payFor(cur),fx=0;items().forEach(function(i){var it=p.it[i];if(it&&it.ok)fx+=it.m||0});if(fx>0)seg.push({n:'Pagos fijos',v:fx,c:'#b0b8b5'});
+  DEST.forEach(function(c){var v=sum(D.filter(function(x){return x.tipo==='inv'&&x.cat===c&&x.fecha.slice(0,7)===cur}));if(v>0)seg.push({n:lab(c),v:v,c:ccol(c)})});
+  var T=seg.reduce(function(a,x){return a+x.v},0),R=70,C=2*Math.PI*R,off=0,arcs='';
+  seg.sort(function(a,b){return b.v-a.v});
+  seg.forEach(function(x){var l=x.v/T*C;arcs+='<circle cx="100" cy="100" r="'+R+'" fill="none" stroke="'+x.c+'" stroke-width="26" stroke-dasharray="'+l+' '+(C-l)+'" stroke-dashoffset="'+(-off)+'" transform="rotate(-90 100 100)"/>';off+=l});
+  var svg='<svg viewBox="0 0 200 200" role="img" aria-label="Reparto del mes" style="width:200px;height:200px;flex:none"><circle cx="100" cy="100" r="'+R+'" fill="none" stroke="var(--line)" stroke-width="26"/>'+arcs+'<text x="100" y="94" text-anchor="middle" font-size="11" fill="var(--mute)">Total del mes</text><text x="100" y="116" text-anchor="middle" font-size="17" font-weight="800" fill="var(--ink)">'+eur.format(T)+'</text></svg>';
+  var leg=seg.length?seg.map(function(x){return '<div style="display:flex;justify-content:space-between;gap:8px;font-size:13px"><span><i class="dot" style="background:'+x.c+'"></i>'+esc(x.n)+'</span><b>'+Math.round(x.v/T*100)+' %</b></div>'}).join(''):'<p class="lbl" style="font-weight:400">Aún no hay movimientos este mes.</p>';
+  $('donut').innerHTML='<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;margin-bottom:14px">'+svg+'<div style="flex:1 1 150px;display:grid;gap:4px">'+leg+'</div></div><p class="lbl" style="font-weight:400;font-size:12px;margin:-6px 0 14px">Incluye gastos, pagos fijos marcados y Ahorro/Inversión/Colchón.</p>';
 }
 function drawCal(){
   var y=+cur.slice(0,4),m=+cur.slice(5)-1,first=(new Date(y,m,1).getDay()+6)%7,nd=new Date(y,m+1,0).getDate(),td=today();
@@ -398,6 +415,8 @@ function qsave(cat){
   D.push(o);save();cur=d.slice(0,7);sel=null;
   $('qd').close();render();toast(o);
 }
+function outClose(d){d.addEventListener('click',function(e){var r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()})}
+outClose($('qd'));outClose($('ed'));
 $('fab').addEventListener('click',openQ);
 $('qcx').addEventListener('click',function(){$('qd').close()});
 $('qt').addEventListener('click',function(e){var q=e.target.getAttribute('data-q');if(!q)return;qtab=q;drawQ();$('qa').focus()});
