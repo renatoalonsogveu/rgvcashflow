@@ -56,6 +56,7 @@ details.card>summary{cursor:pointer;font:700 15px/1.2 Manrope,sans-serif}
 .qt button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 #qa{font:800 34px/1.1 'Bricolage Grotesque',Impact,sans-serif;text-align:center;padding:10px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chip[aria-pressed="true"]{border-color:var(--acc);box-shadow:inset 0 0 0 1px var(--acc)}
 .chip{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:10px 14px;font-weight:700;font-size:14px}
 .lnk{background:transparent;color:var(--mute);font-weight:700;padding:6px 0;text-decoration:underline}
 .lbl{color:var(--mute);font-size:14px;font-weight:600;margin:0}
@@ -374,7 +375,7 @@ function dayPace(lim,tot){
   if(cm===cur&&tot>lim*(nd-left+1)/nd)h+=' <span style="color:#e0a100;font-weight:700">Vas por encima del ritmo.</span>';
   el.innerHTML=h;
 }
-var qtab='g',qexp=false,tt;
+var qtab='g',qexp=false,tt,qcat='';
 var DEST=['Ahorro','Inversión','Colchón'];
 function lab(c){return DLBL[c]||c}
 function ccol(c){var i=CATS.indexOf(c);return DCOL[c]||COL[i<0?0:i]}
@@ -387,17 +388,18 @@ function recent(t){
 function drawQ(){
   var t=qtab,ch=t==='i'?[]:recent(t);
   Array.prototype.forEach.call($('qt').querySelectorAll('button'),function(b){b.setAttribute('aria-pressed',b.getAttribute('data-q')===t)});
-  $('qc').innerHTML=ch.map(function(c){return '<button type="button" class="chip" data-c="'+c+'"><i class="dot" style="background:'+ccol(c)+'"></i>'+esc(lab(c))+'</button>'}).join('');
+  if(ch.indexOf(qcat)<0)qcat=ch[0]||'';
+  $('qc').innerHTML=ch.map(function(c){return '<button type="button" class="chip" data-c="'+c+'" aria-pressed="'+(c===qcat)+'"><i class="dot" style="background:'+ccol(c)+'"></i>'+esc(lab(c))+'</button>'}).join('');
   $('qs').innerHTML=(t==='g'?CATS:DEST).map(function(c){return '<option value="'+c+'">'+esc(lab(c))+'</option>'}).join('');
-  if(ch.length)$('qs').value=ch[0];
+  if(qcat)$('qs').value=qcat;
   $('qs').hidden=(t==='i');
-  $('qx').hidden=!qexp;$('qok').hidden=!(t==='i'||qexp);
+  $('qx').hidden=!qexp;$('qok').hidden=false;$('qok').textContent=t==='i'?'Guardar ingreso':(t==='v'?'Guardar ahorro/inversión':'Guardar compra');
   $('qm').textContent=qexp?'Menos opciones':'Más opciones';
   $('qh').style.color='';
   $('qh').textContent=t==='i'?'Escribe el importe y toca Guardar.':(t==='v'?'Escribe el importe y toca un destino.':'Escribe el importe y toca una categoría.');
 }
 function openQ(){
-  qexp=false;qtab='g';$('qa').value='';$('qn').value='';
+  qexp=false;qtab='g';qcat='';$('qa').value='';$('qn').value='';
   $('qdt').value=(today().slice(0,7)===cur?today():cur+'-01');
   drawQ();$('qd').showModal();$('qa').focus();setTimeout(function(){$('qa').focus()},60);
 }
@@ -415,14 +417,16 @@ function qsave(cat){
   D.push(o);save();cur=d.slice(0,7);sel=null;
   $('qd').close();render();toast(o);
 }
-function outClose(d){d.addEventListener('click',function(e){var r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()})}
+function outClose(d){var out=false;d.addEventListener('pointerdown',function(e){var r=d.getBoundingClientRect();out=e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom});d.addEventListener('click',function(e){if(out&&e.target===d)d.close();out=false})}
 outClose($('qd'));outClose($('ed'));
 $('fab').addEventListener('click',openQ);
 $('qcx').addEventListener('click',function(){$('qd').close()});
 $('qt').addEventListener('click',function(e){var q=e.target.getAttribute('data-q');if(!q)return;qtab=q;drawQ();$('qa').focus()});
-$('qc').addEventListener('click',function(e){var b=e.target.closest('[data-c]');if(b)qsave(b.getAttribute('data-c'))});
+$('qc').addEventListener('click',function(e){var b=e.target.closest('[data-c]');if(!b)return;qcat=b.getAttribute('data-c');drawQ()});
+['qa','qn'].forEach(function(i){$(i).addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();$('qok').click()}})});
+$('qs').addEventListener('change',function(){qcat=$('qs').value;drawQ()});
 $('qm').addEventListener('click',function(){qexp=!qexp;drawQ()});
-$('qok').addEventListener('click',function(){qsave($('qs').value)});
+$('qok').addEventListener('click',function(){qsave(qtab==='i'?'Ingreso':$('qs').value)});
 $('qa').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();if(!$('qok').hidden)qsave($('qs').value)}});
 var editId=null;
 function openEdit(id){
